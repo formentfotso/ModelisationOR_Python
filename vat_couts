@@ -1,0 +1,17 @@
+# Transformation des temps d'attente (x_vals) en coûts
+cost_vals = 5000 * x_vals  # Y = 5000 * X
+
+# Calcul des probabilités cumulées pour les coûts
+cdf_costs = np.cumsum(density_vals) / np.sum(density_vals)
+
+# Création du graphique de la fonction de répartition des coûts
+plt.figure(figsize=(10, 6))
+plt.plot(cost_vals, cdf_costs, color='blue', label='Fonction de répartition des coûts (F_Y(y))')
+
+# Configuration du graphique
+plt.title("Fonction de répartition des coûts (F_Y(y))", fontsize=14)
+plt.xlabel("Coûts (euros)", fontsize=12)
+plt.ylabel("Probabilité cumulée", fontsize=12)
+plt.legend()
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
