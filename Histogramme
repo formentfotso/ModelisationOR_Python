@@ -1,1 +1,35 @@
+# Importation des bibliothèques nécessaires
+from google.colab import drive
+import pandas as pd
+import matplotlib.pyplot as plt
 
+# 1. Connexion à votre Google Drive (une fenêtre d'autorisation va s'ouvrir)
+drive.mount('/content/drive')
+
+# 2. Définition du chemin exact vers votre fichier
+chemin = '/content/drive/MyDrive/DataORX/Données_pannes_serveur_2014_2024.xlsx'
+
+# 3. Lecture du fichier Excel
+data_pannes = pd.read_excel(chemin)
+
+# 4. Affichage des 5 premières lignes pour vérifier que l'importation a fonctionné
+data_pannes.head()
+
+# Filtrer les données pour exclure la ligne "Total" si elle existe
+data_pannes_filtered = data_pannes[data_pannes['Année'] != 'Total']
+
+# Calculer les fréquences des nombres de pannes
+unique_pannes = data_pannes_filtered['Nombre de pannes'].value_counts().sort_index()
+
+# Calcul des probabilités
+probabilities = unique_pannes / unique_pannes.sum()
+
+# Création de l'histogramme des probabilités
+plt.figure(figsize=(10, 6))
+plt.bar(unique_pannes.index, probabilities, color='skyblue', edgecolor='black', alpha=0.7)
+plt.title("Distribution des probabilités des pannes de serveur", fontsize=14)
+plt.xlabel("Nombre de pannes", fontsize=12)
+plt.ylabel("Probabilité", fontsize=12)
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.xticks(unique_pannes.index)
+plt.show()
