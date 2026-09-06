@@ -1,0 +1,48 @@
+# -----------------------------------------------
+# QQ-PLOT : Ajustement d'une loi lognormale
+# aux montants de pertes opérationnelles
+# -----------------------------------------------
+# Connexion à votre Google Drive (une fenêtre d'autorisation va s'ouvrir)
+drive.mount('/content/drive')
+
+# Bibliothèques
+
+import pandas as pd
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Charger les données depuis le fichier Excel
+file_path = '/content/drive/MyDrive/DataORX/Montants_attente_panneServeur.xlsx'
+df = pd.read_excel(file_path)
+
+# Afficher un aperçu des données
+print("Aperçu des données :")
+print(df.head())
+
+# Extraire la colonne contenant les montants de pertes
+data = df['Montant']
+
+# Ajuster une loi lognormale : estimation des paramètres
+shape, loc, scale = stats.lognorm.fit(data, floc=0)  # loc fixé à 0
+
+# Calcul de μ à partir du scale
+mu = np.log(scale)
+
+# Afficher les paramètres estimés
+print("\nParamètres estimés de la loi lognormale :")
+print(f"Shape (σ) = {shape:.4f}")
+print(f"Loc (μ)   = {loc:.4f}")
+print(f"Scale     = {scale:.2f}")
+print(f"mμ (moyenne de ln(X)) = {mu:.4f}")
+
+# Tracer le QQ-plot
+plt.figure(figsize=(8, 6))
+stats.probplot(data, dist="lognorm", sparams=(shape, loc, scale), plot=plt)
+
+plt.title("QQ-plot : Données vs Loi Lognormale Ajustée")
+plt.xlabel("Quantiles théoriques (Lognormale)")
+plt.ylabel("Quantiles empiriques (Données)")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
