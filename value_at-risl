@@ -1,0 +1,21 @@
+# Calcul de la probabilité cumulative pour x ≤ 24 heures (méthode intégrale directe)
+probability_24h = density.integrate_box_1d(0, 24)
+
+# Création du graphique de probabilité cumulée
+cdf_vals = np.cumsum(density_vals) / np.sum(density_vals)
+plt.figure(figsize=(10, 6))
+plt.plot(x_vals, cdf_vals, color='blue', label='Probabilité cumulée (CDF)')
+plt.axvline(24, color='red', linestyle='--', label='x = 24 heures')
+plt.axhline(probability_24h, color='red', linestyle='--')
+plt.scatter([24], [probability_24h], color='red', label=f'P(X ≤ 24 h) = {probability_24h:.2%}')
+
+# Configuration du graphique
+plt.title("Probabilités cumulées des temps d'attente avant réparation", fontsize=14)
+plt.xlabel("Temps d'attente (heures)", fontsize=12)
+plt.ylabel("Probabilité cumulée", fontsize=12)
+plt.legend()
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
+
+# Affichage de la probabilité cumulative
+print(f"Proportion des réparations en moins de 24 heures (méthode intégrale directe) : {probability_24h:.2%}")
