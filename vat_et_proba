@@ -1,0 +1,27 @@
+# Création du graphique avec annotations réduites de moitié pour améliorer la lisibilité
+plt.figure(figsize=(12, 8))
+
+# Tracé de la fonction de répartition (probabilité cumulée en fonction des coûts)
+plt.plot(cost_vals, cdf_costs, color='blue', label='Fonction de répartition (F_Y(y))')
+
+# Ajouter des lignes reliant chaque probabilité à son quantile
+for i in range(0, len(cdf_costs), 50):  # Sous-échantillon réduit pour lisibilité
+    prob = cdf_costs[i]
+    quantile = cost_vals[i]
+    
+    # Ajouter des lignes de liaison
+    plt.axhline(prob, color='gray', linestyle='--', alpha=0.5)
+    plt.axvline(quantile, color='gray', linestyle='--', alpha=0.5)
+    plt.scatter(quantile, prob, color='red', s=10)  # Ajouter un point à l'intersection
+    
+    # Ajouter des annotations sur les axes
+    plt.text(cost_vals[i], -0.02, f"{int(quantile)}€", fontsize=8, ha='center', color='black')  # Annotation sur l'axe des x
+    plt.text(-5000, prob, f"{prob:.2f}", fontsize=8, va='center', color='black')  # Annotation sur l'axe des y
+
+# Configuration du graphique
+plt.title("Fonction de répartition : Relation Probabilité - Quantile", fontsize=16)
+plt.xlabel("Coût (euros)", fontsize=12)
+plt.ylabel("Probabilité cumulée", fontsize=12)
+plt.legend()
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
